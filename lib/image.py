@@ -71,7 +71,7 @@ def GetFits(Image, Imageout, xlo, xhi, ylo, yhi):
     hdu = fits.open(Image)
     dat = hdu[0].data[ylo - 1:yhi, xlo - 1:xhi]
     hdu[0].data = dat
-    hdu.writeto(Imageout, clobber=True)
+    hdu.writeto(Imageout, overwrite=True)
     hdu.close()
 
 
@@ -191,7 +191,7 @@ def MakeImage(newfits, sizex, sizey):
 
     hdu = fits.PrimaryHDU()
     hdu.data = np.zeros((sizey, sizex))
-    hdu.writeto(newfits, clobber=True)
+    hdu.writeto(newfits, overwrite=True)
 
     return True
 
@@ -248,7 +248,7 @@ def OldMakeMask(maskimage, catfile, scale, regfile):
                 "Skipping object {}, one or more pixels are saturated \n".format(n[idx]))
 
     hdu[0].data = img
-    hdu.writeto(maskimage, clobber=True)
+    hdu.writeto(maskimage, overwrite=True)
     hdu.close()
 
     return True
@@ -325,7 +325,7 @@ def MakeMask(maskimage, catfile, scale, offset, regfile):
 
 
     hdu[0].data = img
-    hdu.writeto(maskimage, clobber=True)
+    hdu.writeto(maskimage, overwrite=True)
     hdu.close()
 
     return True
@@ -452,7 +452,7 @@ def MakeSatBox(maskimage, region, val, ncol, nrow):
 
 
     hdu[0].data = img
-    hdu.writeto(maskimage, clobber=True)
+    hdu.writeto(maskimage, overwrite=True)
     hdu.close()
 
     return True
@@ -519,7 +519,7 @@ def MakeSkyMask(maskimage, catfile, scale, offset, regfile):
 
 
     hdu[0].data = img
-    hdu.writeto(maskimage, clobber=True)
+    hdu.writeto(maskimage, overwrite=True)
     hdu.close()
 
     return True
@@ -581,7 +581,7 @@ def SetZero(image, num, xlo, xhi, ylo, yhi):
 
 
     hdu[0].data = dat
-    hdu.writeto(image, clobber=True)
+    hdu.writeto(image, overwrite=True)
     hdu.close()
 
     return True
