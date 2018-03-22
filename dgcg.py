@@ -73,7 +73,7 @@ def main():
     global Version
     global StartRun,EndRun
 
-    Version = "3.0  January/2018"
+    Version = "3.0  March/2018"
 
 
     if len(sys.argv[1:]) != 1:
