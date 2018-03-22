@@ -1,0 +1,18 @@
+#    1  XMin                  Minimum x-coordinate among detected pixels
+#    2  XMax                  Maximum x-coordinate among detected pixels
+#    3  YMin                  Minimum y-coordinate among detected pixels 
+#    4  YMax                  Maximum y-coordinate among detected pixels 
+#    5  OFFX                  Offset x for tile image
+#    6  OFFY                  Offset y for tile image
+#    7  InputImage            Input image  
+#    8  OutImage              output image with dgcg extention 
+#    9  Num                   Object Number 
+#   10  RA                    Right Ascension 
+#   11  DEC                   Declination 
+#   12  PosXSer               Sersic X position 
+#   13  PosYSer               Sersic Y position 
+#   14  ReSer                 Sersic effective radius 
+#   15  Sky                   Background Sky value 
+#   16  Tidal                 Tidal value (See manual) 
+1028 1079 1111 1165 618 618 tempfits/A85-3-3.fits Outputs/A85-004148.23-m0917003.50-222-out.fits 222 00:41:48.23 -9:17:003.50 1053.950 1137.980 1.986 1065.840 0.000 
+

@@ -1,0 +1,8 @@
+os
+astropy
+numpy
+sys
+scipy
+subprocess
+timeit
+stat
