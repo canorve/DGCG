@@ -13,63 +13,9 @@
 ############################################################################################
 
 
-# Last Version: 5/Jul/2011
-# MaxFit and MagDiff modified
-
-# Last Version: 10/Mar/2011
-# number of degrees of freedom is added to output
-
-# Last Version: 1/Mar/2011
-# flag = 4 is activated when a nan error is occurred
-
-# Last Version: 24/Feb/2011
-# a new pixel directory was added. Now the final parameters are computed within 1 kron radius
-
-# Last Version: 19/Feb/2011
-# JoinSexOut was modified. Now provide 99 mag to galaxies which were not fitted by GALFIT
-
-# Last Version: 28/Jan/2011
-# MakeOutput and Tidal functions were corrected. principally the computation of the SNR
-
-# Last Version: 9/Dic/2010
-# CheckSatRegion function was corrected. Also run time is print before to create final files
-
-# Last Version: 4/Nov/2010
-# Tidal, bumpiness, local chinu, snr are computed inside the Scale * Kron radius
-
-# Last Version: 17/Oct/2016
-# Program was translated to Python
-# Now it is called pyDGCG
-
-
-# Last Version: April/2017
-# files and folders have a tree structure
-# variables are stored in a Class
- 
 
 
 ## document this in  the future.
 
 
-## Introduction
 
-This project is an example for a python command-line application structure with a unit testing framework
-
-## Prerequisites
-
-* [nose](http://code.google.com/p/python-nose/)
-* [mockito](http://code.google.com/p/mockito-python/)
-
-### Installation on OSX
-
-        sudo easy_install nose
-        sudo easy_install mockito
-
-## Running the Application
-
-        bin/project [arguments]
-
-## Testing
-
-        cd project
-        nosetests
