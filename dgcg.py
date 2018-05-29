@@ -64,6 +64,10 @@ from lib import catfil
 # variables are stored in a Class
 
 
+
+## ATENTION: insertar assert en el codigo para mayor control
+## ATENTION: insertar la carpeta bin en el codigo 
+
 ################
 #  main code:  #
 ################
