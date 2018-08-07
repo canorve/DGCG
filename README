@@ -14,6 +14,39 @@
 
 
 
+    ================================================================================
+    Title:
+    Authors:
+    ================================================================================
+    Code names: [e.g., program.f]
+
+    Language: [e.g., Fortran 77]
+
+    License: [e.g. MIT License]
+
+    Code tested under the following compilers/operating systems: [e.g., gcc/Linux]
+
+    Description of input data: [include units and formatting]
+
+    Description of output data: [include units]
+
+    System requirements: [e.g., minimum floating point precision]
+
+    Calls to external routines: [e.g., SIMPLX.F from "Numerical Recipes'' by Press et al.1992]
+
+    Additional comments: [e.g., Program calculates the minimum of a function]
+
+    ================================================================================
+    The AAS gives permission to anyone who wishes to use these subroutines to run their own calculations.
+    Permission to republish or reuse these routines should be directed to permissions@aas.org.
+
+    Note that the AAS does not take responsibility for the content of the source code. Potential users should
+    be wary of applying the code to conditions that the code was not written to model and the accuracy of the
+    code may be affected when compiled and executed on different systems.
+    ================================================================================
+     
+
+
 
 ## document this in  the future.
 
