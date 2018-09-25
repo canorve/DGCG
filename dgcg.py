@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+
 
 import numpy as np
 import sys
@@ -66,7 +66,7 @@ from lib import catfil
 
 
 ## ATENTION: insertar assert en el codigo para mayor control
-## ATENTION: insertar la carpeta bin en el codigo 
+## ATENTION: insertar la carpeta bin en el codigo
 
 ################
 #  main code:  #
