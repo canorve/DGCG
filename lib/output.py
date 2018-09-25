@@ -1339,12 +1339,13 @@ def MakeOutput(inputf, parvar, obj):
 
                 meanmeser = magser + 2.5 * np.log10(2 * np.pi * reser * reser)
 
-                fn = (( nser * np.exp( kser)) / (kser ** (2 * nser )) ) * ( np.exp(scipy.special.gammaln(2*nser)) )
+                fn = (( axiser * nser * np.exp( kser)) / (kser ** (2 * nser )) ) * ( np.exp(scipy.special.gammaln(2*nser)) )
 
                 meser = meanmeser +  2.5 * np.log10( fn )
 
                 ermeanmeser=np.sqrt(ermagser**2 + (erreser**2)*(5*np.log10(np.e)/reser)**2 )
 
+# ATENTION check how to include axiser in devfn
 ###   computing ermeser
                 dudn  =  np.e*scipy.special.gamma(2*nser) + nser * np.e**kser * scipy.special.gamma(2*nser) * scipy.special.polygamma(0, 2*nser)
                 dvdn  =  2*np.log(kser)*(kser ** (2 * nser ))
@@ -1364,7 +1365,7 @@ def MakeOutput(inputf, parvar, obj):
 
                     meanmeexp = magexp  + 2.5 * np.log10(2 * np.pi * reexp * reexp)
 
-                    fnexp= (np.exp( kexp) / (kexp ** (2 )) ) * ( np.exp(scipy.special.gammaln(2)) )
+                    fnexp= (axisexp * np.exp( kexp) / (kexp ** (2 )) ) * ( np.exp(scipy.special.gammaln(2)) )
                     meexp = meanmeexp +  2.5 * np.log10( fnexp )
 
                     msexp = meexp - 1.822
