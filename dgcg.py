@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 
 
 import numpy as np
@@ -26,9 +27,8 @@ from lib import catfil
 #                       DGCG is a wrapper script for GALFIT                                #
 #                                                                                          #
 #                                                                                          #
-#                          written by Christopher Añorve                                   #
+#                          written by C. Añorve                                            #
 #                                                                                          #
-# Note: DGCG was created from galfit.pl and galfit.cl (scripts from GALFIT package)        #
 ############################################################################################
 
 # Last Version: 5/Jul/2011
@@ -77,7 +77,7 @@ def main():
     global Version
     global StartRun,EndRun
 
-    Version = "3.0  March/2018"
+    Version = "3.2  Dic/2018"
 
 
     if len(sys.argv[1:]) != 1:
