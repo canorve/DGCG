@@ -66,7 +66,6 @@ from lib import catfil
 
 
 ## ATENTION: insertar assert en el codigo para mayor control
-## ATENTION: insertar la carpeta bin en el codigo
 
 ################
 #  main code:  #
