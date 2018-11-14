@@ -354,21 +354,26 @@ def CheckSaneValues(parvar):
     "Check for sane values in parameters file"
 
 
-    if not os.path.isfile(parvar.Img):
-        print("Can't found {}; exiting... \n".format(parvar.Img))
-        sys.exit()
-    else:
-        (sizex, sizey) = image.GetAxis(parvar.Img)
+    errmsg="Can't found {}; exiting... \n".format(parvar.Img)
+    assert os.path.isfile(parvar.Img), errmsg
+    (sizex, sizey) = image.GetAxis(parvar.Img)
 
-    if not os.path.isfile(parvar.SexCat):
-        print("Can't found {}; exiting...\n".format(parvar.SexCat))
-        sys.exit()
+
+    errmsg="Can't found {}; exiting... \n".format(parvar.SexCat)
+    assert os.path.isfile(parvar.SexCat), errmsg
+
 
     if not os.path.isfile(parvar.SigImg) and not parvar.SigImg != "none":
         print("Can't found {}; but thats OK... \n".format(parvar.SigImg))
 
+#    errmsg="Can't found {}; exiting... \n".format(parvar.SigImg)
+#    assert os.path.isfile(parvar.SigImg), errmsg
+
     if not os.path.isdir(parvar.PsfDir):
         print("Can't found {}; but thats OK...\n".format(parvar.PsfDir))
+
+#    errmsg="Can't found {}; exiting... \n".format(parvar.PsfDir)
+#    assert os.path.isdir(parvar.PsfDir), errmsg
 
     if not (IsFloat(parvar.MagZpt) or IsInteger(parvar.MagZpt)):
         print("MagZpt = {} is not a number; exiting...\n".format(parvar.MagZpt))
@@ -394,17 +399,22 @@ def CheckSaneValues(parvar):
         print("ConvBox = {} is not a integer; exiting...\n".format(parvar.ConvBox))
         sys.exit()
 
+
     if not (IsFloat(parvar.FitBox) or IsInteger(parvar.FitBox)):
         print("FitBox = {} is not a number; exiting...\n".format(parvar.FitBox))
         sys.exit()
+
 
     if not (IsFloat(parvar.MagDiff) or IsInteger(parvar.MagDiff)):
         print("MagDiff = {} is not a number; exiting...\n".format(parvar.MagDiff))
         sys.exit()
 
+
     if not (IsFloat(parvar.KronScale) or IsInteger(parvar.KronScale)):
         print("KronScale = {} is not a number; exiting...\n".format(parvar.KronScale))
         sys.exit()
+
+
 
     if not (IsFloat(parvar.SkyScale) or IsInteger(parvar.SkyScale)):
         print("SkyScale = {} is not a number; exiting...\n".format(parvar.SkyScale))
