@@ -6,3 +6,4 @@ scipy
 subprocess
 timeit
 stat
+mgefit
