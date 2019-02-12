@@ -752,17 +752,20 @@ def GetExpVars(statement):
 
 def GetExpErrVars(statement):
 
-    words = statement.split()
+#    words = statement.split()
+    partrash,stats= statement.split("(")
+    words = stats.split()
 
-    erposxexp     = words[1]
-    erposyexp     = words[2]
-    ermagexp      = words[3]
-    errsexp       = words[4]
-    eraxisexp     = words[5]
-    erpaexp       = words[6]
 
-    erxposexp = erxposexp.strip(",")  # equivalent in python
-    eryposexp = eryposexp.strip(")")
+    erposxexp     = words[0]
+    erposyexp     = words[1]
+    ermagexp      = words[2]
+    errsexp       = words[3]
+    eraxisexp     = words[4]
+    erpaexp       = words[5]
+
+    erposxexp = erposxexp.strip(",")  # equivalent in python
+    erposyexp = erposyexp.strip(")")
 
     erposxexp = erposxexp.strip("[")
     erposxexp = erposxexp.strip("]")
@@ -795,7 +798,7 @@ def GetExpErrVars(statement):
     erpaexp = erpaexp.strip("}")
 
 
-    return (erposxser,erposyser,ermagexp,errsexp,eraxisexp,erpaexp)
+    return (erposxexp,erposyexp,ermagexp,errsexp,eraxisexp,erpaexp)
 
 
 
