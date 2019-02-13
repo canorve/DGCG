@@ -323,7 +323,7 @@ def ReadFitlog(output):
                             line = lines[index]
 #                       (tmp) = line.split()
 
-                            (erposxser,erposyser,ermagexp,errsexp,eraxisexp,erpaexp)=GetExpErrVars(line)
+                            (erposxexp,erposyexp,ermagexp,errsexp,eraxisexp,erpaexp)=GetExpErrVars(line)
 
 #### print line to Output
                             line = "{} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} \n".format(inputimage, initfile, restartfile, outim, function, posxexp, posyexp, magexp, rsexp, 1, axisexp, paexp, erposxexp, erposyexp, ermagexp, errsexp, 0, eraxisexp, erpaexp)
@@ -505,7 +505,7 @@ def ReadFitlog2(output):
                     line = lines[index]
 #                   (tmp) = line.split()
 
-                    (erposxser,erposyser,ermagexp,errsexp,eraxisexp,erpaexp)=GetExpErrVars(line)
+                    (erposxexp,erposyexp,ermagexp,errsexp,eraxisexp,erpaexp)=GetExpErrVars(line)
 
 #### print line to Output
                     line = "{} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} \n".format(inputimage, initfile, restartfile, outim, function, posxexp, posyexp, magexp, rsexp, 1, axisexp, paexp, erposxexp, erposyexp, ermagexp, errsexp, 0, eraxisexp, erpaexp)
