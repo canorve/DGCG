@@ -17,8 +17,11 @@ def GetAxis(Image):
     "Get number of rows and columns from the image"
 
     hdu = fits.open(Image)
-    ncol = hdu[0].header["NAXIS1"]
-    nrow = hdu[0].header["NAXIS2"]
+#    ncol = hdu[0].header["NAXIS1"]
+#    nrow = hdu[0].header["NAXIS2"]
+    ncol = hdu[0].header.get("NAXIS1",2000) # return 2000 if not found
+    nrow = hdu[0].header.get("NAXIS2",2000) # return 2000 if not found
+
     hdu.close()
     return ncol, nrow
 
@@ -28,7 +31,9 @@ def GetGain(Image):
     "Get gain from the image"
 
     hdu = fits.open(Image)
-    gain = hdu[0].header["GAIN"]
+#    gain = hdu[0].header["GAIN"]
+    gain = hdu[0].header.get("GAIN",7) # return 7 if not found
+
     hdu.close()
     return gain
 
@@ -38,7 +43,9 @@ def GetRdnoise(Image):
     "Get Rdnoise from the image"
 
     hdu = fits.open(Image)
-    rdnoise = hdu[0].header["RDNOISE"]
+#    rdnoise = hdu[0].header["RDNOISE"]
+    rdnoise = hdu[0].header.get("RDNOISE",5.2) # return 5.2 if not found
+
     hdu.close()
     return rdnoise
 
@@ -48,7 +55,9 @@ def GetExpTime(Image):
     "Get exposition time from the image"
 
     hdu = fits.open(Image)
-    exptime = hdu[0].header["EXPTIME"]
+#    exptime = hdu[0].header["EXPTIME"]
+    exptime = hdu[0].header.get("EXPTIME",1) # return 1 if not found
+
     hdu.close()
     return exptime
 
