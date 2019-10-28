@@ -1315,7 +1315,9 @@ def UpdateSatFlags(parvar):
 
     for idx, item in enumerate(Num):
 
-        regflag = check.CheckSatReg(XPos[idx], YPos[idx], parvar.Ds9SatReg, RKron[idx], Theta[idx], E[idx])
+#        regflag = check.CheckSatReg(XPos[idx], YPos[idx], parvar.Ds9SatReg, RKron[idx], Theta[idx], E[idx])
+        regflag = check.CheckSatReg2(XPos[idx], YPos[idx],parvar.Ds9SatReg)
+
         # check if object doesn't has saturated regions
         checkflag = check.CheckFlag(Flag[idx], flagsat)
 

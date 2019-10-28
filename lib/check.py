@@ -311,6 +311,55 @@ def CheckSatReg(x, y, filein, R, theta, ell):
 
 
 
+def CheckSatReg2(x,y,filein):
+   "Check if object is inside of saturated region. returns True if at least one pixel is inside"
+## check if object is inside of
+## saturaded region as indicated by ds9 box region
+## returns True if object center is in saturaded region
+
+   flag = False
+
+   with open(filein) as f_in:
+
+       lines = (line.rstrip() for line in f_in) # All lines including the blank ones
+       lines = (line.split('#', 1)[0] for line in lines) # remove comments
+       lines = (line.rstrip() for line in lines)   # remove lines containing only comments
+       lines = (line for line in lines if line) # Non-blank lines
+
+       for line in lines:
+
+           if (line != "image"):
+
+               (box,info)=line.split('(')
+
+               if(box == "box"):
+
+                   (xpos,ypos,xlong,ylong,trash)=info.split(',')
+
+                   xpos=float(xpos)
+                   ypos=float(ypos)
+                   xlong=float(xlong)
+                   ylong=float(ylong)
+
+
+                   xlo = xpos - xlong/2
+                   xhi = xpos + xlong/2
+
+                   ylo = ypos - ylong/2
+                   yhi = ypos + ylong/2
+
+                   if ( (x > xlo and x < xhi) and (y > ylo and y < yhi) ):
+                       flag=True
+                       break
+
+
+   return flag
+
+
+
+
+
+
 
 
 def CheckKron(xpos, ypos, x, y, R, theta, q):
