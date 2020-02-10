@@ -10,7 +10,7 @@ import scipy
 import subprocess as sp
 
 from lib import galfit
-
+from lib import mgetools
 
 
 
@@ -204,6 +204,31 @@ def PrintVar(parvar,FileHandle):
 
     line = "Bias = {} \n".format(parvar.Bias)
     FileHandle.write(line)
+
+# ellipsectgalfit
+
+    line = "ranx = {} \n".format(parvar.ranx)
+    FileHandle.write(line)
+
+    line = "rany = {} \n".format(parvar.rany)
+    FileHandle.write(line)
+
+    line = "plotsub = {} \n".format(parvar.flagsub)
+    FileHandle.write(line)
+
+    line = "dpi = {} \n".format(parvar.dpi)
+    FileHandle.write(line)
+
+    line = "outsb = {} \n".format(parvar.flagout)
+    FileHandle.write(line)
+
+    line = "plotpix = {} \n".format(parvar.flagpix)
+    FileHandle.write(line)
+
+
+
+
+
 
     line = "  \n\n"
     FileHandle.write(line)
@@ -1441,8 +1466,8 @@ def MakeOutput(inputf, parvar, obj):
             goffy =  obj.gOFFY[indx]
 
 
-
             (tidal,objchinu,bump,snr,ndof) = Tidal(imres, imsig, immask, pppnum, sexxser, sexyser, sexxmin, sexxmax, sexymin, sexymax, goffx, goffy, rmin, sky, btflag)
+
 
 #               def Tidal(imgout,imsig,immask,num,xser,yser,xlo,xhi,ylo,yhi,goffx,goffy,rmin,sky,btflag):
 #               imgout = galfit output image
@@ -1457,21 +1482,16 @@ def MakeOutput(inputf, parvar, obj):
 #               btflag = is bulge/disk or sersic component?
 
 
+            if (parvar.FitFunc == "BD"):
+                qarg= axisexp
+                parg= paexp
+            else:
+                qarg= axiser
+                parg= paser
 
+   
+            mgetools.EllipSec(restart,qarg,parg,parvar.flagsub,parvar.flagpix,parvar.ranx,parvar.rany,parvar.dpi,parvar.flagout)
 
-                # filepix was changed by pppnum in Tidal function
-
-# This flag determine how bad is the fitted model
-
-# fix this in the future
-
-#	    if( $tidal > $sigma )
-#	    {
-#		$fitflag= $fitflag + 16;
-#	    }
-
-
-# Checking if parameters reach top (or bottom) of contraints range
 
             if ( magser == consmagmin1  or magser == consmagmax1 ):
 
@@ -1504,27 +1524,6 @@ def MakeOutput(inputf, parvar, obj):
 
 
 
-#                fluxb = errper*(10 **((-magser)/2.5))
-
-#                maglim = -2.5* np.log10(fluxb)
-#                relim=errper * 100
-#                nlim=errper * 10
-#                palim=errper * 360
-#                axiserlim = errper * 1
-
-#                if (btflag == True):
-#                    fluxb = errper*(10 **((-magexp)/2.5))
-
-#                    magexplim= -2.5 * np.log10 (fluxb)
-#                    rslim= errper * 100
-#                    paexplim= errper * 360
-#                    axisexplim= errper * 1
-
-#                if (barflag ==True):
-#                    fluxbar = errper*(10 **((-magbar)/2.5))
-#                    magbarlim = -2.5* np.log10(fluxbar)
-
-
 
 # big errors? if so, then flag it  only nan errors
 
@@ -1537,12 +1536,6 @@ def MakeOutput(inputf, parvar, obj):
                     fitflag=fitflag+4
                     refit=True
 
-#                if(barflag == True):
-#                    if ((ermagbar == "nan") or (errebar == "nan") or (ernbar == "nan") or (erpabar == "nan") or (eraxisbar == "nan") or (ermagbar == "-nan") or (errebar == "-nan") or (ernbar == "-nan") or (erpabar == "-nan") or (eraxisbar == "-nan")):
-#                        fitflag=fitflag+4
-
-
-##########  Computing MeanMeser - Sky  #########
 
             if (sky > 0):
                 magsky =  (-2.5) * np.log10 ( sky / parvar.ExpTime ) + 2.5 * np.log10 (parvar.PlateScale**2) + parvar.MagZpt
@@ -1598,85 +1591,6 @@ def MakeOutput(inputf, parvar, obj):
 
                 countgal=1
 
-### REMOVED:
-
-#### Reading sigma file
-
-#	    if($bulgetotal == 1)
-#	    {
-#		if( -e "bsigmas.txt")
-#		{
-#		    $sigmaflag = ReadSigFile("bsigmas.txt");
-#		}
-#	    }
-#	    else
-#	    {
-#		if(-e "bdsigmas.txt")
-#		{
-#		    $sigmaflag = ReadSigFile("bdsigmas.txt");
-#		}
-#	    }
-
-#	    if ($sigmaflag == 1)
-#	    {
-#		SplineMag();
-#		SplineRe();
-#		SplineN();
-#		SplineBT();
-#		SplineMagb();
-#		SplineMagd();
-#		SplineRs();
-#	    }
-
-
-##  REMOVED:
-###  sigma sim calculation errors
-
-#	    if ($sigmaflag  == 1 && $snr >= 0)
-#	    {
-
-#		if($snr <= 12) # this limit is the highest value of bdsigmas and bsigmas files.
-#		{
-
-#		    $ermagtotal = SplintMag($snr);
-#		    $erresersim = SplintRe($snr);
-#		    $ernsersim = SplintN($snr);
-#		    $erbt = SplintBT($snr);
-#		    $ermagsersim = SplintMagb($snr);
-#		    $ermagexpsim = SplintMagd($snr);
-#		    $errsexpsim = SplintRs($snr);
-## rounding....
-#		    $ermagtotal = sprintf "%.3f",$ermagtotal;
-#		    $erresersim = sprintf "%.3f",$erresersim;
-#		    $ernsersim = sprintf "%.3f",$ernsersim;
-#		    $erbt = sprintf "%.3f",$erbt;
-#		    $ermagsersim = sprintf "%.3f",$ermagsersim;
-#		    $ermagexpsim = sprintf "%.3f",$ermagexpsim;
-#		    $errsexpsim = sprintf "%.3f",$errsexpsim;
-#		}
-#		else
-#		{
-#		    $ermagtotal = abs(SplintMag(12));
-#		    $erresersim = abs(SplintRe(12));
-#		    $ernsersim = abs(SplintN(12));
-#		    $erbt = abs(SplintBT(12));
-#		    $ermagsersim = abs(SplintMagb(12));
-#		    $ermagexpsim = abs(SplintMagd(12));
-#		    $errsexpsim = abs(SplintRs(12));
-
-## rounding....
-#		    $ermagtotal = sprintf "%.3f",$ermagtotal;
-#		    $erresersim = sprintf "%.3f",$erresersim;
-#		    $ernsersim = sprintf "%.3f",$ernsersim;
-#		    $erbt = sprintf "%.3f",$erbt;
-#		    $ermagsersim = sprintf "%.3f",$ermagsersim;
-#		    $ermagexpsim = sprintf "%.3f",$ermagexpsim;
-#		    $errsexpsim = sprintf "%.3f",$errsexpsim;
-#		}
-
-#	    }
-#	    else
-#	    {
             ermagtotal = 0
             erbt = 0
             ermagsersim = 0
@@ -1684,12 +1598,6 @@ def MakeOutput(inputf, parvar, obj):
             ernsersim = 0
             ermagexpsim = 0
             errsexpsim = 0
-#	    }
-
-#	    $kser = sprintf "%.3f",$kser;
-
-
-#                if (logbflag == True and logdflag == True and skyflag == True): #REMOVED
 
 
             maskind = obj.Num == pppnum
@@ -1886,7 +1794,6 @@ def MakeOutput(inputf, parvar, obj):
         OUTDS9.close()
         OUTINFO.close()
         OUTFLAGS.close()
-#        INFIT.close()
         OUTBT.close()
 
 

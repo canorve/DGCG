@@ -694,8 +694,62 @@ def ReadFile(parvar,File):
                     print("Unexpected error at reading param file:",
                           sys.exc_info()[0])
                     raise
+            
+            # ellipsectgalfit        
+            if params[0] == "ranx":
+                try:
+                    (param, ranx) = line.split()
+                    parvar.ranx = float(ranx)
+                except:
+                    print("Unexpected error at reading param file:",
+                          sys.exc_info()[0])
+                    raise
+            if params[0] == "rany":
+                try:
+                    (param, rany) = line.split()
+                    parvar.rany = float(rany)
+                except:
+                    print("Unexpected error at reading param file:",
+                          sys.exc_info()[0])
+                    raise
+            if params[0] == "plotsub":    # plot subcomponents in output figures?
+                try:
+                    (param, flagsub) = line.split()
+                    flagsub = int(flagsub)
+                    parvar.flagsub = bool(flagsub)
+                except:
+                    print("Unexpected error at reading param file:",
+                          sys.exc_info()[0])
+                    raise
 
+            if params[0] == "plotpix":    # plot subcomponents in output figures?
+                try:
+                    (param, flagpix) = line.split()
+                    flagpix = int(flagpix)
+                    parvar.flagpix = bool(flagpix)
+                except:
+                    print("Unexpected error at reading param file:",
+                          sys.exc_info()[0])
+                    raise
 
+            if params[0] == "outsb":    # sb output file
+                try:
+                    (param, flagout) = line.split()
+                    flagout = int(flagout)
+                    parvar.flagout = bool(flagout)
+                except:
+                    print("Unexpected error at reading param file:",
+                          sys.exc_info()[0])
+                    raise
+
+            if params[0] == "dpi":    # Maximum number of objects for ds9
+                try:
+                    (param, dpi) = line.split()
+                    parvar.dpi = int(dpi)
+                except:
+                    print("Unexpected error at reading param file:",
+                          sys.exc_info()[0])
+                    raise
 
     return True
 

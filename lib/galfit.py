@@ -46,7 +46,7 @@ class ParamFile:
         self.MagMax = 19
         self.FlagSex = 4
         self.ConsFile = "constraints"
-        self.Region = 0
+        self.Region = False
         self.Bxmin = 0
         self.Bymin = 0
         self.Bxmax = 2000
@@ -66,9 +66,9 @@ class ParamFile:
         self.BoxSkyOut = "boxsky.reg"
         self.SexSort = "sexsort.cat"
         self.SexArSort = "sexarsort.cat"
-        self.Erase = 0
-        self.Nice = 0
-        self.Overwrite = 1
+        self.Erase = False
+        self.Nice = False
+        self.Overwrite = True
         self.Execute = 1
         self.Contrast = 3
         self.Bias = 0.7
@@ -128,6 +128,19 @@ class ParamFile:
         self.TableFits = "table.fits"
         self.FileOut = "fits.txt"
         self.HeadFlag=True
+
+#  EllipSectGalfit       
+
+        self.ranx=0.7  ## is this Ok?
+        self.rany=1  ## is this Ok?
+        self.flagsub=False
+        self.dpi=100
+        self.flagout=False
+        self.flagpix=True
+
+
+
+
 
 
 class Object:

@@ -76,7 +76,7 @@ def main():
     global Version
     global StartRun,EndRun
 
-    Version = "3.2  Dic/2018"
+    Version = "3.4  Feb/2020"
 
 
     if len(sys.argv[1:]) != 1:
@@ -728,54 +728,7 @@ def main():
 ##########################################################
 
 
-## removed after the introduction of RunDir
-#            runcmd = "mv obj-* {}/.".format(ParVar.InputDir)
-#            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
-#####################
-
-
-            runcmd = "mv sigma-* {}/.".format(ParVar.MaskDir)
-            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
-
-#            runcmd = "mv out-* {}/.".format(ParVar.OutputDir)
-#            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
-
-            runcmd = "mv galfit.* {}/.".format(ParVar.OutputDir)
-            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
-
-#            runcmd = "mv mask-* {}/.".format(ParVar.InputDir)
-#            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
-
-            runcmd = "mv *-out.fits {}/.".format(ParVar.OutputDir)
-            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
-
-#            mkdir = "{}/{}".format(ParVar.InputDir, ParVar.PsfDir)
-#            if not os.path.exists(mkdir):
-#                os.makedirs(mkdir)
-
-#            runcmd = "cp {}/* {}/.".format(ParVar.PsfDir, mkdir)
-#            errcp = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errcp)
-
-#            runcmd = "cp {} {}/.".format(ParVar.ConsFile, ParVar.InputDir)
-#            errcp = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errcp)
-
-            print("Done GALFITting XD \n")
+            print("Done GALFITting :) \n")
 
 
 
@@ -911,6 +864,57 @@ def main():
         errm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
                       stderr=sp.PIPE, universal_newlines=True)
 
+
+## removed after the introduction of RunDir
+#            runcmd = "mv obj-* {}/.".format(ParVar.InputDir)
+#            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+#                           stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errmv)
+#####################
+
+
+        runcmd = "mv sigma-* {}/.".format(ParVar.MaskDir)
+        errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+                       stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errmv)
+
+#            runcmd = "mv out-* {}/.".format(ParVar.OutputDir)
+#            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+#                           stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errmv)
+
+        runcmd = "mv galfit.* {}/.".format(ParVar.OutputDir)
+        errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+                       stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errmv)
+
+#            runcmd = "mv mask-* {}/.".format(ParVar.InputDir)
+#            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+#                           stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errmv)
+
+        runcmd = "mv *-out.fits {}/.".format(ParVar.OutputDir)
+        errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+                       stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errmv)
+
+        runcmd = "mv *.png {}/.".format(ParVar.OutputDir)
+        errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+                       stderr=sp.PIPE, universal_newlines=True)
+
+#            mkdir = "{}/{}".format(ParVar.InputDir, ParVar.PsfDir)
+#            if not os.path.exists(mkdir):
+#                os.makedirs(mkdir)
+
+#            runcmd = "cp {}/* {}/.".format(ParVar.PsfDir, mkdir)
+#            errcp = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+#                           stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errcp)
+
+#            runcmd = "cp {} {}/.".format(ParVar.ConsFile, ParVar.InputDir)
+#            errcp = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+#                           stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errcp)
 
 
 
