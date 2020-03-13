@@ -2,29 +2,30 @@
 
 #  DGCG 
 
-## Info
-    ================================================================================
-    Title:Driver for GALFIT on Cluster Galaxies 
-    Authors: Christopher Añorve
-    ================================================================================
-    Code names: bin/dgcg
+## Information
 
-    Language: [python 3]
 
-    License: [GNU]
+Title: Driver for GALFIT on Cluster Galaxies 
+Author: Christopher Añorve
 
-    Code tested under the following compilers/operating systems: [e.g., gcc/Linux]
+Code names: bin/dgcg
 
-    Description of input data: [need image and input parameters files (Check manual)]
+Language: [python 3]
 
-    Description of output data: [include units]
+License: [GNU]
 
-    System requirements: [check requirements.txt]
+Code tested under the following compilers/operating systems: [gcc/Linux]
 
-    Calls to external routines: [e.g., SIMPLX.F from "Numerical Recipes'' by Press et al.1992]
+Description of input data: [need image and input parameters files (Check manual)]
 
-    Additional comments: [e.g., wrapper for GALFIT to fit galaxies in galaxy clusters]
+Description of output data: [include units]
 
-    see  [manual] (./docs/Manual.pdf)
+System requirements: [check requirements.txt]
+
+Calls to external routines: [GALFIT (peng, 2002)]
+
+Additional comments: [e.g., wrapper for GALFIT to fit galaxies in galaxy clusters]
+
+See [Manual](./docs/Manual.pdf) for further explanations of the code
 
 
