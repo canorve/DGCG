@@ -13,12 +13,12 @@ import scipy.special
 from timeit import default_timer as timer
 import argparse 
 
-from lib import dgcg
-from lib import check
-from lib import image
-from lib import output
-from lib import catfil
-from lib import config 
+from dgcg.lib import dgcg
+from dgcg.lib import check
+from dgcg.lib import image
+from dgcg.lib import output
+from dgcg.lib import catfil
+from dgcg.lib import config 
 
 
 ############################################################################################
