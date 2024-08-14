@@ -34,10 +34,14 @@ dgcg
 ====
 
 
-    Add a short description here!
+    Driver for GALFIT on Clusters Galaxies
 
 
 A longer description of your project goes here...
+It takes an input catalog of Sextractor (or Clusex) and it re-format it 
+to run GALFIT on every object in the image. Later, it computes the photometric
+parameters of every surface brightness model fitted with GALFIT.
+
 
 
 .. _pyscaffold-notes:
