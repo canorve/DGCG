@@ -11,12 +11,14 @@ from astropy.io import fits
 import scipy
 import scipy.special
 from timeit import default_timer as timer
+import argparse 
 
 from lib import galfit
 from lib import check
 from lib import image
 from lib import output
 from lib import catfil
+from lib import config 
 
 
 ############################################################################################
@@ -65,7 +67,6 @@ from lib import catfil
 
 
 
-## ATENTION: insertar assert en el codigo para mayor control
 
 ################
 #  main code:  #
@@ -73,43 +74,36 @@ from lib import catfil
 
 def main():
 
-    global Version
     global StartRun,EndRun
 
-    Version = "3.4  Feb/2020"
-
-
-    if len(sys.argv[1:]) != 1:
-        print ('Missing arguments')
-        print ("Usage:\n %s [ConfigFile] " % (sys.argv[0]))
-        print ("Example:\n %s Config.txt " % (sys.argv[0]))
-        print ("DGCG Version: {} \n".format(Version))
-
-        sys.exit()
-    else:
-        print ("DGCG Version: {} \n".format(Version))
-
-
-    InFile= sys.argv[1]
-
-
-
-# starting to count time
+    # starting to count time
     StartRun = timer()
 
 
-#   initialize default variables
+    parser = argparse.ArgumentParser(description="DGCG: Driver for GALFIT on Cluster Galaxies")
 
-#################################################
-#   creating a Object for input file parameters
+    # required arguments
+    parser.add_argument("ConfigFile", help="DGCG configuration file ")
+
+
+    args = parser.parse_args()
+
+    InFile = args.ConfigFile 
+
+    ParVar = config.read_config(InFile)
+
+    import pdb;pdb.set_trace()
+    #   initialize default variables
+    #################################################
+    #   creating a Object for input file parameters
     ParVar = galfit.ParamFile()
-#################################################
+    #################################################
 
 
-# read parameter file
+    # read parameter file
     catfil.ReadFile(ParVar,InFile)
 
-# verify parameters have sane values
+    # verify parameters have sane values
     check.CheckSaneValues(ParVar)
 
 

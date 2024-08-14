@@ -608,7 +608,7 @@ def PrintHeader(hdl, A, B, C, D, E, F, G, xlo, xhi, ylo, yhi, convx, convy, J, p
     lineH = "H) {} {} {} {}                          # Image region to fit (xmin xmax ymin ymax)               \n".format(xlo, xhi, ylo, yhi)
     lineI = "I) {} {}                                # Size of the convolution box (x y)                       \n".format(convx, convy)
     lineJ = "J) {}                                   # Magnitude photometric zeropoint                         \n".format(J)
-    lineK = "K) {} {}                                # Plate scale (dx dy). \[arcsec per pixel\]               \n".format(platedx, platedy)
+    lineK = "K) {} {}                                # Plate scale (dx dy). [arcsec per pixel]               \n".format(platedx, platedy)
     lineO = "O) {}                                   # Display type (regular, curses, both)                    \n".format(O)
     lineP = "P) {}                                   # Choose 0=optimize, 1=model, 2=imgblock, 3=subcomps      \n".format(P)
     lineS = "S) {}                                   # Modify/create objects interactively?                    \n".format(S)

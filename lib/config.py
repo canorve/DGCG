@@ -2,13 +2,13 @@
 import configparser
 
 
-def read_config():
+def read_config(confile):
 
 	# Create a ConfigParser object
     config = configparser.ConfigParser()
 
 	# Read the configuration file
-    config.read('dgcg.ini')
+    config.read(confile)
 
 
 	# Access values from the configuration file
