@@ -8,7 +8,7 @@ import scipy
 import scipy.special
 import subprocess as sp
 
-from lib import check
+from dgcg.lib import check
 
 
 

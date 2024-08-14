@@ -9,9 +9,9 @@ import scipy.special
 import subprocess as sp
 
 
-from lib import image
-from lib import check
-from lib import catfil
+from dgcg.lib import image
+from dgcg.lib import check
+from dgcg.lib import catfil
 
 
 
