@@ -699,28 +699,28 @@ def CheckSaneValues(parvar):
         print("Something is wrong in the Sextractor catalog please check: \n")
         print("  1 NUMBER                 Running object number             \n")
         print(
-            "  2 ALPHA_J2000            Right ascension of barycenter (J2000)   \[deg\]   \n")
+            "  2 ALPHA_J2000            Right ascension of barycenter (J2000)   [deg]   \n")
         print(
-            "  3 DELTA_J2000            Declination of barycenter (J2000)       \[deg\]   \n")
+            "  3 DELTA_J2000            Declination of barycenter (J2000)       [deg]   \n")
         print(
-            "  4 X_IMAGE                Object position along x                 \[pixel\] \n")
+            "  4 X_IMAGE                Object position along x                [pixel] \n")
         print(
-            "  5 Y_IMAGE                Object position along y                 \[pixel\] \n")
+            "  5 Y_IMAGE                Object position along y                 [pixel] \n")
         print(
-            "  6 MAG_APER               Fixed aperture magnitude vector         \[mag\]   \n")
+            "  6 MAG_APER               Fixed aperture magnitude vector         [mag]   \n")
         print("  7 KRON_RADIUS            Kron apertures in units of A or B                 \n")
         print(
-            "  8 FLUX_RADIUS            Fraction-of-light radii                 \[pixel\] \n")
+            "  8 FLUX_RADIUS            Fraction-of-light radii                 [pixel] \n")
         print(
-            "  9 ISOAREA_IMAGE          Isophotal area above Analysis threshold \[pixel**2\]\n")
+            "  9 ISOAREA_IMAGE          Isophotal area above Analysis threshold [pixel**2]\n")
         print(
-            "  10 A_IMAGE               Profile RMS along major axis            \[pixel\] \n")
-        print("  11 ELLIPTICITY           1 \- B_IMAGE/A_IMAGE                              \n")
+            "  10 A_IMAGE               Profile RMS along major axis            [pixel] \n")
+        print("  11 ELLIPTICITY           1 - B_IMAGE/A_IMAGE                              \n")
         print(
-            "  12 THETA_IMAGE           Position angle (CCW/x)                  \[deg\]   \n")
+            "  12 THETA_IMAGE           Position angle (CCW/x)                  [deg]   \n")
         print(
-            "  13 BACKGROUND            Background at centroid position         \[count\] \n")
-        print("  14 CLASS_STAR            S\/G classifier output                            \n")
+            "  13 BACKGROUND            Background at centroid position         [count] \n")
+        print("  14 CLASS_STAR            S/G classifier output                            \n")
         print("  15 FLAGS                 Extraction flags                                  \n")
         print("       \n")
 
