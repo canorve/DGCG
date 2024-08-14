@@ -1,6 +1,4 @@
-#!/usr/bin/python
-
-
+#! /usr/bin/env python3
 
 
 import numpy as np
@@ -13,12 +11,14 @@ from astropy.io import fits
 import scipy
 import scipy.special
 from timeit import default_timer as timer
+import argparse 
 
-from lib import galfit
+from lib import dgcg
 from lib import check
 from lib import image
 from lib import output
 from lib import catfil
+from lib import config 
 
 
 ############################################################################################
@@ -29,9 +29,8 @@ from lib import catfil
 #                       DGCG is a wrapper script for GALFIT                                #
 #                                                                                          #
 #                                                                                          #
-#                          written by Christopher Añorve                                   #
+#                          written by C. Añorve                                            #
 #                                                                                          #
-# Note: DGCG was created from galfit.pl and galfit.cl (scripts from GALFIT package)        #
 ############################################################################################
 
 # Last Version: 5/Jul/2011
@@ -67,9 +66,6 @@ from lib import catfil
 # variables are stored in a Class
 
 
-## ATENTION correct the rounds errors in the outputs
-# ATENTION modify Make file to change first line of this file /usr/bin/python
-
 
 
 ################
@@ -78,43 +74,36 @@ from lib import catfil
 
 def main():
 
-    global Version
     global StartRun,EndRun
 
-    Version = "3.0  July/2017"
-
-
-    if len(sys.argv[1:]) != 1:
-        print ('Missing arguments')
-        print ("Usage:\n %s [ConfigFile] " % (sys.argv[0]))
-        print ("Example:\n %s Config.txt " % (sys.argv[0]))
-        print ("DGCG Version: {} \n".format(Version))
-
-        sys.exit()
-    else:
-        print ("DGCG Version: {} \n".format(Version))
-
-
-    InFile= sys.argv[1]
-
-
-
-# starting to count time
+    # starting to count time
     StartRun = timer()
 
 
-#   initialize default variables
+    parser = argparse.ArgumentParser(description="DGCG: Driver for GALFIT on Cluster Galaxies")
 
-#################################################
-#   creating a Object for input file parameters
-    ParVar = galfit.ParamFile()
-#################################################
+    # required arguments
+    parser.add_argument("ConfigFile", help="DGCG configuration file ")
 
 
-# read parameter file
+    args = parser.parse_args()
+
+    InFile = args.ConfigFile 
+
+    ParVar = config.read_config(InFile)
+
+    import pdb;pdb.set_trace()
+    #   initialize default variables
+    #################################################
+    #   creating a Object for input file parameters
+    ParVar = dgcg.ParamFile()
+    #################################################
+
+
+    # read parameter file
     catfil.ReadFile(ParVar,InFile)
 
-# verify parameters have sane values
+    # verify parameters have sane values
     check.CheckSaneValues(ParVar)
 
 
@@ -172,9 +161,9 @@ def main():
     errrm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
                    stderr=sp.PIPE, universal_newlines=True)
 
-    runcmd = "rm {}".format(ParVar.SkyFitted)
-    errrm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-                   stderr=sp.PIPE, universal_newlines=True)
+#    runcmd = "rm {}".format(ParVar.SkyFitted)
+#    errrm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+#                   stderr=sp.PIPE, universal_newlines=True)
 
 
     runcmd = "rm {}".format(ParVar.ListObjs)
@@ -228,8 +217,6 @@ def main():
     runcmd = "rm fit.log"
     errrm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
                    stderr=sp.PIPE, universal_newlines=True)
-
-
 
 
 
@@ -374,9 +361,9 @@ def main():
 
 
     print("====================== DGCG In a NutShell =========================== \n")
-    print(" This script takes the SExtractor output, and formats it for GALFIT.  \n")
+    print(" This script takes the pySEx output, and formats it for GALFIT.  \n")
     print(" DGCG: Driver for GALFIT on Cluster Galaxies                          \n")
-    print(" Created by Christopher Añorve                          	             \n")
+    print(" Created by Christopher Añorve et al.                         	             \n")
     print("===================================================================== \n")
 
 
@@ -386,7 +373,7 @@ def main():
 
     output.PrintVar(ParVar,flog)
 
-    OffsetFile = "OffsetPos"
+#    OffsetFile = "OffsetPos"
 
     fobjs = open(ParVar.ListObjs, "w")
 
@@ -402,7 +389,7 @@ def main():
 
 ############################
 # defining a object Class to store all the variables
-    Obj = galfit.Object()
+    Obj = dgcg.Object()
 ############################
 
 ###############  Read in sextractor sorted data ################
@@ -465,7 +452,7 @@ def main():
     Obj.YSMax = Obj.YSMax.astype(int)
 
 
-#######  this section of the code is in BETA!!!! remove it if fails
+
     maskblkx = Obj.IX > ParVar.Split
     if maskblkx.any():
         Obj.IX[maskblkx]= Obj.IX[maskblkx] -1
@@ -474,8 +461,6 @@ def main():
     maskblky = Obj.IY > ParVar.Split
     if maskblky.any():
         Obj.IY[maskblky]= Obj.IY[maskblky] -1
-
-###############
 
 
 #   Make sure the object coordinate in the subpanel is correct
@@ -502,7 +487,8 @@ def main():
     if maskiy.any():
         Obj.YBuffer[maskiy] = ParVar.Buffer
 
-
+# Obj.OFFX and Obj.OFFY transform coordinates
+#  from big image to tile image --> IM-X-Y.fits
     Obj.OFFX = (Obj.IX - 1) * XChunk - Obj.XBuffer
     Obj.OFFY = (Obj.IY - 1) * YChunk - Obj.YBuffer
 
@@ -511,10 +497,10 @@ def main():
 ##############################################################
 # creating empty arrays
 
-#    Obj.fxmin = np.array([0]*Tot)
-#    Obj.fxmax = np.array([0]*Tot)
-#    Obj.fymin = np.array([0]*Tot)
-#    Obj.fymax = np.array([0]*Tot)
+#    Obj.gXMIN = np.array([0]*Tot)
+#    Obj.gXMAX = np.array([0]*Tot)
+#    Obj.gYMIN = np.array([0]*Tot)
+#    Obj.gYMAX = np.array([0]*Tot)
 
 
     XSize = Obj.XMax - Obj.XMin
@@ -537,8 +523,6 @@ def main():
     if masksize.any():
         YSize[masksize] = 30
 
-
-
     #  Calculate the (x,y) position of the current object relative to
     #  the tile in which it lives.
 
@@ -555,14 +539,12 @@ def main():
         XLo[maskxy] = 1
 
 
-
     XHi = XFit + XSize / 2
     XHi = XHi.astype(int)
 
-    maskxy = XHi > ParVar.NCol
+    maskxy = XHi > ParVar.NCol  #This does not affect the code at all
     if maskxy.any():
         XHi[maskxy] = ParVar.NCol
-
 
 
     YLo = YFit - YSize / 2
@@ -576,7 +558,7 @@ def main():
     YHi = YFit + YSize / 2
     YHi = YHi.astype(int)
 
-    maskxy = YHi > ParVar.NRow
+    maskxy = YHi > ParVar.NRow  # same as above but for y axis
     if maskxy.any():
         YHi[maskxy] = ParVar.NRow
 
@@ -584,14 +566,19 @@ def main():
     # Calculate information needed to plug back into the image header
     # at the end of the fit.
 
-    Obj.fxmin = XLo + Obj.OFFX  # The [fxmin:fxmax,fymin:fymax] of the box
-    Obj.fxmax = XHi + Obj.OFFX  # relative to the big image from which
-    Obj.fymin = YLo + Obj.OFFY  # the current tile was extracted.
-    Obj.fymax = YHi + Obj.OFFY
+    Obj.gXMIN = XLo + Obj.OFFX  # The [gXMIN:gXMAX,gYMIN:gYMAX] of the box
+    Obj.gXMAX = XHi + Obj.OFFX  # relative to the big image from which
+    Obj.gYMIN = YLo + Obj.OFFY  # the current tile was extracted.
+    Obj.gYMAX = YHi + Obj.OFFY
+
+    Obj.gOFFX = Obj.gXMIN - 1
+    Obj.gOFFY = Obj.gYMIN - 1
 
 
-# xlo, ylo, xhi, yhi correspond to the small image
-# fxmin, fymin, fxmax, fymax correspond to the big image
+############################################################
+###########################################################
+# XLo, YLo, XHi, YHi correspond to the small image
+# gXMIN, gYMIN, gXMAX, gYMAX correspond to the big image (original)
 ##############################################################
 ##############################################################
 
@@ -667,7 +654,7 @@ def main():
     Obj.SNR = np.array([0.0]*Tot)
     Obj.NDof = np.array([0]*Tot)
     Obj.FitFlag = np.array([0]*Tot)
-    Obj.ReFit =  np.array([True]*Tot)   #rerun if didn't fit
+    Obj.ReFit =  np.array([False]*Tot)   #rerun if didn't fit
 ###########################
 
 
@@ -682,7 +669,6 @@ def main():
 # 1: Execute everything compute sky, create input files, run galfit and create output file;
 # 2: only computes sky
 # 3: Execute everything except creation of output file
-
 
 
     if ParVar.Execute != 0:
@@ -706,7 +692,7 @@ def main():
 
 
 ###############
-        galfit.RunSky(ParVar,Obj)
+        dgcg.RunSky(ParVar,Obj)
 ###############
 
 
@@ -732,58 +718,11 @@ def main():
 
 #########################################################
             # here comes the serious stuff:
-            galfit.DGCG(ParVar,Obj,flog,fobjs,fout2,fout3,fout4)
+            dgcg.DGCG(ParVar,Obj,flog,fobjs,fout2,fout3,fout4)
 ##########################################################
 
 
-## removed after the introduction of RunDir
-#            runcmd = "mv obj-* {}/.".format(ParVar.InputDir)
-#            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
-#####################
-
-
-            runcmd = "mv sigma-* {}/.".format(ParVar.MaskDir)
-            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
-
-#            runcmd = "mv out-* {}/.".format(ParVar.OutputDir)
-#            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
-
-            runcmd = "mv galfit.* {}/.".format(ParVar.OutputDir)
-            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
-
-#            runcmd = "mv mask-* {}/.".format(ParVar.InputDir)
-#            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
-
-            runcmd = "mv *-out.fits {}/.".format(ParVar.OutputDir)
-            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
-
-#            mkdir = "{}/{}".format(ParVar.InputDir, ParVar.PsfDir)
-#            if not os.path.exists(mkdir):
-#                os.makedirs(mkdir)
-
-#            runcmd = "cp {}/* {}/.".format(ParVar.PsfDir, mkdir)
-#            errcp = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errcp)
-
-#            runcmd = "cp {} {}/.".format(ParVar.ConsFile, ParVar.InputDir)
-#            errcp = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errcp)
-
-            print("Done GALFITting XD \n")
+            print("Done GALFITting :) \n")
 
 
 
@@ -878,12 +817,28 @@ def main():
 
         print("Erasing unnecesary files \n")
 
-        runcmd = "rm -r {}".format(ParVar.TempDir)
-        errm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-                      stderr=sp.PIPE, universal_newlines=True)
+#        runcmd = "rm -r {}".format(ParVar.TempDir)
+#        errm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+#                      stderr=sp.PIPE, universal_newlines=True)
         # CheckError(errm)
 
         os.remove("psf.temp")
+
+        os.remove("inforegion")
+
+        os.remove("ListObjs")
+
+        os.remove("objflags")
+
+        os.remove(ParVar.OffsetPos)
+
+        os.remove(ParVar.SkyCrashes)
+
+        os.remove(ParVar.Crashes)
+        os.remove(ParVar.Fitted)
+
+
+
 
 #   $errno = system("rm $InputDir/mask-*");
 #   CheckError($errno);
@@ -899,6 +854,64 @@ def main():
         # CheckError(errm)
 
 
+        runcmd = "rm -r {}".format(ParVar.SkyDir)
+        errm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+                      stderr=sp.PIPE, universal_newlines=True)
+
+
+## removed after the introduction of RunDir
+#            runcmd = "mv obj-* {}/.".format(ParVar.InputDir)
+#            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+#                           stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errmv)
+#####################
+
+
+        runcmd = "mv sigma-* {}/.".format(ParVar.MaskDir)
+        errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+                       stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errmv)
+
+#            runcmd = "mv out-* {}/.".format(ParVar.OutputDir)
+#            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+#                           stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errmv)
+
+        runcmd = "mv galfit.* {}/.".format(ParVar.OutputDir)
+        errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+                       stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errmv)
+
+#            runcmd = "mv mask-* {}/.".format(ParVar.InputDir)
+#            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+#                           stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errmv)
+
+        runcmd = "mv *-out.fits {}/.".format(ParVar.OutputDir)
+        errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+                       stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errmv)
+
+        runcmd = "mv *.png {}/.".format(ParVar.OutputDir)
+        errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+                       stderr=sp.PIPE, universal_newlines=True)
+
+#            mkdir = "{}/{}".format(ParVar.InputDir, ParVar.PsfDir)
+#            if not os.path.exists(mkdir):
+#                os.makedirs(mkdir)
+
+#            runcmd = "cp {}/* {}/.".format(ParVar.PsfDir, mkdir)
+#            errcp = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+#                           stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errcp)
+
+#            runcmd = "cp {} {}/.".format(ParVar.ConsFile, ParVar.InputDir)
+#            errcp = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+#                           stderr=sp.PIPE, universal_newlines=True)
+#        CheckError(errcp)
+
+
+
     if (ParVar.Execute != 0 and ParVar.Execute != 2):
 
         GalTot = ParVar.Failures + ParVar.Success
@@ -911,7 +924,30 @@ def main():
         os.makedirs(ParVar.ReRunDir)
 
 
-# ATENTION copy files for ReFitFlag
+    maskrun= Obj.ReFit == True
+
+
+    ind=np.where(maskrun == True)
+
+    indx=ind[0]
+
+    for idx in enumerate(indx):
+
+        objid = Obj.Num[idx[1]]
+
+        parfile =  "obj" + "-" + str(objid)
+
+        pmsg="copying file {} for refit. ReFit = {}; FitFlag = {} ".format(parfile, Obj.ReFit[idx[1]], Obj.FitFlag[idx[1]])
+        print(pmsg)
+
+        dirparfile =  ParVar.RunDir + "/" + parfile
+
+        redirparfile =  ParVar.ReRunDir + "/" + parfile
+
+        runcmd = "cp {} {}".format(dirparfile,redirparfile)
+        errcp = sp.run([runcmd], shell=True, stdout=sp.PIPE,stderr=sp.PIPE, universal_newlines=True)
+
+    print("copying files to refit done..")
 
 
 ################################
