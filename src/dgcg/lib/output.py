@@ -9,7 +9,7 @@ import scipy.special
 import scipy
 import subprocess as sp
 
-from dgcg.lib import dgcg 
+from dgcg.lib import core 
 from dgcg.lib import mgetools
 
 
@@ -2327,7 +2327,7 @@ def JoinSexOut(parvar, obj):
         indx=ind[0][0]
 ############
 
-        fitflag=galfit.SearchObj(idx)
+        fitflag=core.SearchObj(idx)
 
         if fitflag == False:
             obj.FitFlag[i] = obj.FitFlag[i] + 8

@@ -8,7 +8,7 @@ import scipy.special
 import subprocess as sp
 
 
-from dgcg.lib import GetAxis # call with the whole path in the future
+from dgcg.lib.image import GetAxis # call with the whole path in the future
 
 
 #def CheckKron(err):

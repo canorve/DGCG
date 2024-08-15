@@ -13,7 +13,7 @@ import scipy.special
 from timeit import default_timer as timer
 import argparse 
 
-from dgcg.lib import dgcg
+from dgcg.lib import core 
 from dgcg.lib import check
 from dgcg.lib import image
 from dgcg.lib import output
@@ -96,7 +96,7 @@ def mainDGCG():
     #   initialize default variables
     #################################################
     #   creating a Object for input file parameters
-    ParVar = dgcg.ParamFile()
+    ParVar = core.ParamFile()
     #################################################
 
 
@@ -389,7 +389,7 @@ def mainDGCG():
 
 ############################
 # defining a object Class to store all the variables
-    Obj = dgcg.Object()
+    Obj = core.Object()
 ############################
 
 ###############  Read in sextractor sorted data ################
@@ -692,7 +692,7 @@ def mainDGCG():
 
 
 ###############
-        dgcg.RunSky(ParVar,Obj)
+        core.RunSky(ParVar,Obj)
 ###############
 
 
@@ -718,7 +718,7 @@ def mainDGCG():
 
 #########################################################
             # here comes the serious stuff:
-            dgcg.DGCG(ParVar,Obj,flog,fobjs,fout2,fout3,fout4)
+            core.DGCG(ParVar,Obj,flog,fobjs,fout2,fout3,fout4)
 ##########################################################
 
 
