@@ -8,7 +8,7 @@ import scipy.special
 import subprocess as sp
 
 
-from dgcg.lib import image  # call with the whole path in the future
+from dgcg.lib.image import GetAxis # call with the whole path in the future
 
 
 #def CheckKron(err):
@@ -405,7 +405,7 @@ def CheckSaneValues(parvar):
 
     errmsg="Can't found {}; exiting... \n".format(parvar.Img)
     assert os.path.isfile(parvar.Img), errmsg
-    (sizex, sizey) = image.GetAxis(parvar.Img)
+    (sizex, sizey) = GetAxis(parvar.Img)
 
 
     errmsg="Can't found {}; exiting... \n".format(parvar.SexCat)

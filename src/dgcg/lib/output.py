@@ -9,7 +9,7 @@ import scipy.special
 import scipy
 import subprocess as sp
 
-from dgcg.lib import galfit
+from dgcg.lib import dgcg 
 from dgcg.lib import mgetools
 
 
