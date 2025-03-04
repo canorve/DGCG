@@ -92,23 +92,23 @@ def mainDGCG():
 
     ParVar = config.read_config(InFile)
 
-    import pdb;pdb.set_trace()
     #   initialize default variables
     #################################################
     #   creating a Object for input file parameters
-    ParVar = core.ParamFile()
+    #ParVar = core.ParamFile()
     #################################################
 
-
     # read parameter file
-    catfil.ReadFile(ParVar,InFile)
+    #catfil.ReadFile(ParVar,InFile)
 
     # verify parameters have sane values
-    check.CheckSaneValues(ParVar)
+    # temporalmente desabilitado
+    #check.CheckSaneValues(ParVar)
 
 
-#########################################
-### deleting any previous files run by DGCG
+    #########################################
+    ### deleting any previous files run by DGCG
+    #mover a una funcion
 
     runcmd = "rm {}".format(ParVar.Crashes)
     errrm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
@@ -161,9 +161,9 @@ def mainDGCG():
     errrm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
                    stderr=sp.PIPE, universal_newlines=True)
 
-#    runcmd = "rm {}".format(ParVar.SkyFitted)
-#    errrm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                   stderr=sp.PIPE, universal_newlines=True)
+    #    runcmd = "rm {}".format(ParVar.SkyFitted)
+    #    errrm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+    #                   stderr=sp.PIPE, universal_newlines=True)
 
 
     runcmd = "rm {}".format(ParVar.ListObjs)
@@ -184,9 +184,9 @@ def mainDGCG():
                       stderr=sp.PIPE, universal_newlines=True)
 
 
-#    runcmd = "rm -r {}".format(ParVar.InputDir)
-#    errm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                      stderr=sp.PIPE, universal_newlines=True)
+    #    runcmd = "rm -r {}".format(ParVar.InputDir)
+    #    errm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+    #                      stderr=sp.PIPE, universal_newlines=True)
 
     runcmd = "rm -r {}".format(ParVar.SkyDir)
     errm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
@@ -222,6 +222,7 @@ def mainDGCG():
 
 #######################################
 
+    import pdb;pdb.set_trace()
 
     (ParVar.NCol, ParVar.NRow) = image.GetAxis(ParVar.Img)
     (ParVar.ExpTime)           = image.GetExpTime(ParVar.Img)
