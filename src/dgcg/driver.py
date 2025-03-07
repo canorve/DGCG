@@ -293,10 +293,12 @@ def mainDGCG():
 
     ###################
 
-    #lastmod
 
     ### creating directories...
+    #create directories
 
+
+    # move the instruction below to a function
     #    if not os.path.exists(ParVar.InputDir):
     #        os.makedirs(ParVar.InputDir)
 
@@ -313,71 +315,73 @@ def mainDGCG():
         os.makedirs(ParVar.RunDir)
 
 
-#    if not os.path.exists(ParVar.PixDir):
-#        os.makedirs(ParVar.PixDir)
+    #    if not os.path.exists(ParVar.PixDir):
+    #        os.makedirs(ParVar.PixDir)
 
-#    if not os.path.exists(ParVar.MaskPixDir):
-#        os.makedirs(ParVar.MaskPixDir)
+    #    if not os.path.exists(ParVar.MaskPixDir):
+    #        os.makedirs(ParVar.MaskPixDir)
 
 
+    #divide into chunks the big (original) image
     XChunk = int(ParVar.NCol / ParVar.Split)
     YChunk = int(ParVar.NRow / ParVar.Split)
 
 
-# REMOVED NOT NEEDED ANYMORE
-# mask pixels
+    # REMOVED NOT NEEDED ANYMORE
+    # mask pixels
 
-#    print ("Getting pixels from every object to remove masks \n")
-#    GetPixels(SegFile,SexSort,KronScale,PixPrefix,XChunk,YChunk,Buffer)
+    #    print ("Getting pixels from every object to remove masks \n")
+    #    GetPixels(SegFile,SexSort,KronScale,PixPrefix,XChunk,YChunk,Buffer)
 
-#    errpix = system("mv PixPrefix* MaskPixDir/\. ")
-#    CheckError(errpix)
+    #    errpix = system("mv PixPrefix* MaskPixDir/\. ")
+    #    CheckError(errpix)
 
-# object pixels
+    # object pixels
 
-#    print ("Getting pixels from every object to compute final parameters \n")
-#    GetPixels(PixFile,SexSort,1,PixPrefix,XChunk,YChunk,Buffer)
+    #    print ("Getting pixels from every object to compute final parameters \n")
+    #    GetPixels(PixFile,SexSort,1,PixPrefix,XChunk,YChunk,Buffer)
 
-#    errpix = system("mv PixPrefix* PixDir/\. ")
-#    CheckError(errpix)
-####################################################
+    #    errpix = system("mv PixPrefix* PixDir/\. ")
+    #    CheckError(errpix)
+    ####################################################
+
 
     print("Creating Ds9 Box region of all objects \n")
-    catfil.BoxDs9(ParVar)
+    catfil.BoxDs9(ParVar) #check function is this necessary?
 
 
-# splitting image files
+    # splitting image files
     print("Splitting images \n")
     image.SplitImage(ParVar)
 
-#    f = open("psf.temp", "w")
-#    optarg = "{}/PSF*.fits".format(PsfDir)
-#    errpsf = sp.call(["ls", optarg], stdout=f)
+    #    f = open("psf.temp", "w")
+    #    optarg = "{}/PSF*.fits".format(PsfDir)
+    #    errpsf = sp.call(["ls", optarg], stdout=f)
 
     runcmd = "ls {}/PSF*.fits > psf.temp".format(ParVar.PsfDir)
     errpsf = sp.run([runcmd], shell=True, stdout=sp.PIPE,
                stderr=sp.PIPE, universal_newlines=True)
 
 
-#    f.close()
-# CheckError(errpsf)
+    #    f.close()
+    # CheckError(errpsf)
 
 
 
     print("====================== DGCG In a NutShell =========================== \n")
-    print(" This script takes the pySEx output, and formats it for GALFIT.  \n")
+    print(" This script takes the CluSex (or Sextractor) output, and formats it for GALFIT.  \n")
     print(" DGCG: Driver for GALFIT on Cluster Galaxies                          \n")
-    print(" Created by Christopher Añorve et al.                         	             \n")
+    print(" Created by Christopher Añorve                         	             \n")
     print("===================================================================== \n")
 
 
-    flog = open(ParVar.LogFile, "w")
+    flog = open(ParVar.LogFile, "w") #check what is going to be printed in logfile
 
-# print DGCG options in Log file
+    # print DGCG options in Log file
 
     output.PrintVar(ParVar,flog)
 
-#    OffsetFile = "OffsetPos"
+    #    OffsetFile = "OffsetPos"
 
     fobjs = open(ParVar.ListObjs, "w")
 
@@ -387,21 +391,21 @@ def mainDGCG():
     fout4 = open(ParVar.Fitted, "w")
 
 
-#    fskycrash = open(dgcg.SkyCrashes, "w")
-#    fskyfit = open(ParVar.SkyFitted, "w")
+    #    fskycrash = open(dgcg.SkyCrashes, "w")
+    #    fskyfit = open(ParVar.SkyFitted, "w")
 
-
-############################
-# defining a object Class to store all the variables
+    ############################
+    # defining a object Class to store all the variables
     Obj = core.Object()
-############################
+    ############################
 
-###############  Read in sextractor sorted data ################
+    ###############  Read in sextractor sorted data ################
+
+    # check: move below to a function
 
     Obj.Num, Obj.RA, Obj.Dec, Obj.XPos, Obj.YPos, Obj.Mag, Obj.Kron, Obj.FluxRad, Obj.IsoArea, Obj.AIm, Obj.E, Obj.Theta, Obj.Background, Obj.Class, Obj.Flag, Obj.XMin, Obj.XMax, Obj.YMin, Obj.YMax, Obj.XSMin, Obj.XSMax, Obj.YSMin, Obj.YSMax = np.genfromtxt(
 	    ParVar.SexSort, delimiter="", unpack=True)  # sorted
 
-##
     Obj.Angle = Obj.Theta - 90
     Obj.AR = 1 - Obj.E
     Obj.RKron = ParVar.KronScale * Obj.AIm * Obj.Kron
@@ -410,12 +414,12 @@ def mainDGCG():
     Obj.Num = Obj.Num.astype(int)
     Obj.Flag = Obj.Flag.astype(int)
 
-# other stuff:
+    # other stuff:
 
-#    Tot = len(Obj.Num)
+    #    Tot = len(Obj.Num)
     Tot = ParVar.Total
 
-    Obj.Sersic = [ParVar.NSer] * Tot
+    Obj.Sersic = [ParVar.NSer] * Tot #check this for range of random Sersic separate range
     Obj.Sersic = np.array(Obj.Sersic)
 
     Obj.RSky = ParVar.SkyScale * Obj.AIm * Obj.Kron + ParVar.Offset + ParVar.SkyWidth
@@ -436,7 +440,7 @@ def mainDGCG():
     Obj.Neighbors = Obj.Num
 
 
-# subpanel stuff:
+    # subpanel stuff:
 
     Obj.IX = (Obj.XPos / XChunk) + 1
     Obj.IY = (Obj.YPos / YChunk) + 1
@@ -467,9 +471,9 @@ def mainDGCG():
         Obj.IY[maskblky]= Obj.IY[maskblky] -1
 
 
-#   Make sure the object coordinate in the subpanel is correct
+    #  Make sure the object coordinate in the subpanel is correct
 
-# create arrays
+    # create arrays
 
     Obj.XBuffer=np.array([0]*Tot)
     Obj.YBuffer=np.array([0]*Tot)
@@ -491,31 +495,32 @@ def mainDGCG():
     if maskiy.any():
         Obj.YBuffer[maskiy] = ParVar.Buffer
 
-# Obj.OFFX and Obj.OFFY transform coordinates
-#  from big image to tile image --> IM-X-Y.fits
+    # Obj.OFFX and Obj.OFFY transform coordinates
+    #  from big image to tile image --> IM-X-Y.fits
     Obj.OFFX = (Obj.IX - 1) * XChunk - Obj.XBuffer
     Obj.OFFY = (Obj.IY - 1) * YChunk - Obj.YBuffer
 
 
-##############################################################
-##############################################################
-# creating empty arrays
+    ##############################################################
+    ##############################################################
+    # creating empty arrays
+    # check put the instructions below in a function
 
-#    Obj.gXMIN = np.array([0]*Tot)
-#    Obj.gXMAX = np.array([0]*Tot)
-#    Obj.gYMIN = np.array([0]*Tot)
-#    Obj.gYMAX = np.array([0]*Tot)
+    #    Obj.gXMIN = np.array([0]*Tot)
+    #    Obj.gXMAX = np.array([0]*Tot)
+    #    Obj.gYMIN = np.array([0]*Tot)
+    #    Obj.gYMAX = np.array([0]*Tot)
 
 
     XSize = Obj.XMax - Obj.XMin
     YSize = Obj.YMax - Obj.YMin
 
-#   enlarge fit area
+    #   enlarge fit area
 
     XSize = ParVar.FitBox * XSize
     YSize = ParVar.FitBox * YSize
 
-##  30 pixels is the minimum area to fit (arbitrary number):
+    ##  30 pixels is the minimum area to fit (arbitrary number):
 
     masksize = XSize < 30
 
@@ -579,15 +584,15 @@ def mainDGCG():
     Obj.gOFFY = Obj.gYMIN - 1
 
 
-############################################################
-###########################################################
-# XLo, YLo, XHi, YHi correspond to the small image
-# gXMIN, gYMIN, gXMAX, gYMAX correspond to the big image (original)
-##############################################################
-##############################################################
+    ############################################################
+    ##################IMPORTANT INFO BELOW: ####################
+    # XLo, YLo, XHi, YHi correspond to the small image
+    # gXMIN, gYMIN, gXMAX, gYMAX correspond to the big image (original)
+    ##############################################################
+    ##############################################################
 
-
-# Creating empty arrays for output variables
+    # check are the functions below necessary? if so, put them in a function
+    # Creating empty arrays for output variables
     Obj.ra = np.array(["none"]*Tot, dtype=object)
     Obj.dec = np.array(["none"]*Tot, dtype=object)
 
@@ -654,56 +659,58 @@ def mainDGCG():
     Obj.Tidal = np.array([0.0]*Tot)
     Obj.ObjChiNu = np.array([0.0]*Tot)
     Obj.Bump = np.array([0.0]*Tot)
-#    Obj.MeanMesky = np.array([99.9]*Tot) # eliminado
+    #    Obj.MeanMesky = np.array([99.9]*Tot) # eliminado
     Obj.SNR = np.array([0.0]*Tot)
     Obj.NDof = np.array([0]*Tot)
     Obj.FitFlag = np.array([0]*Tot)
     Obj.ReFit =  np.array([False]*Tot)   #rerun if didn't fit
-###########################
+    ###########################
 
 
-#################
-# posible to remove
-#    print("Finding Neighbors for every object \n")
+    #################
+    # check posible to remove
+    #    print("Finding Neighbors for every object \n")
 
-#    FindNeighbors()  # maybe remove this function
-###########
+    #    FindNeighbors()  # maybe remove this function
+    ###########
 
-# 0: Sort catalog and create segmentation images
-# 1: Execute everything compute sky, create input files, run galfit and create output file;
-# 2: only computes sky
-# 3: Execute everything except creation of output file
+    #check: possible remove below:
+    # 0: Sort catalog and create segmentation images
+    # 1: Execute everything compute sky, create input files, run galfit and create output file;
+    # 2: only computes sky
+    # 3: Execute everything except creation of output file
 
 
     if ParVar.Execute != 0:
 
         #   Sky fitting
-        #   DGCG computes the sky first and leaves it fixed for galaxy fitting.
+        #   DGCG computes the sky first and leaves it fixed for galaxy fitting. 
+        # check this because will be optional
 
         print("DGCG is going to compute sky \n")
 
-
-# remove fit.log before to compute sky
+        #check this will be computed inside the folder of every object
+        # remove fit.log before to compute sky
         runcmd = "rm fit.log"
         errrm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
                        stderr=sp.PIPE, universal_newlines=True)
 
-# remove fit.log before to compute sky
+        # remove fit.log before to compute sky
         runcmd = "rm galfit.*"
         errrm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
                        stderr=sp.PIPE, universal_newlines=True)
 
 
 
-###############
+        ###############
         core.RunSky(ParVar,Obj)
-###############
+        ###############
 
-
+        # check to remove this will be removed for every object inside respective folder
         runcmd = "mv fit.log {}/fit.log.sky".format(ParVar.SkyDir)
         errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
                        stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
+        #        CheckError(errmv)
 
         runcmd = "mv Sky-* {}/.".format(ParVar.SkyDir)
         errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
@@ -713,17 +720,18 @@ def mainDGCG():
         runcmd = "mv galfit.* {}/.".format(ParVar.SkyDir)
         errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
                        stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
+        #CheckError(errmv)
 
         print("Done sky fitting \n")
 
 
+        #lastmod
         if (ParVar.Execute != 2):
 
-#########################################################
+        #########################################################
             # here comes the serious stuff:
             core.DGCG(ParVar,Obj,flog,fobjs,fout2,fout3,fout4)
-##########################################################
+        ##########################################################
 
 
             print("Done GALFITting :) \n")
