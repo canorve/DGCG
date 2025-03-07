@@ -74,11 +74,12 @@ from dgcg.lib import config
 
 def mainDGCG():
 
-    global StartRun,EndRun
+    global StartRun,EndRun # necesitan ser globales estas variables?
 
     # starting to count time
     StartRun = timer()
 
+    #inicializar tqm library
 
     parser = argparse.ArgumentParser(description="DGCG: Driver for GALFIT on Cluster Galaxies")
 
@@ -90,25 +91,26 @@ def mainDGCG():
 
     InFile = args.ConfigFile 
 
-    ParVar = config.read_config(InFile)
+    ParVar = config.read_config(InFile) #checkfunction new variables 
 
     #   initialize default variables
     #################################################
     #   creating a Object for input file parameters
-    #ParVar = core.ParamFile()
+    # ParVar = core.ParamFile() #remove
     #################################################
 
     # read parameter file
-    #catfil.ReadFile(ParVar,InFile)
+    # catfil.ReadFile(ParVar,InFile) # remove
 
     # verify parameters have sane values
     # temporalmente desabilitado
-    #check.CheckSaneValues(ParVar)
+    # check.CheckSaneValues(ParVar)
 
 
     #########################################
     ### deleting any previous files run by DGCG
-    #mover a una funcion
+
+    #mover a una funcion: cleanfiles
 
     runcmd = "rm {}".format(ParVar.Crashes)
     errrm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
@@ -220,14 +222,14 @@ def mainDGCG():
 
 
 
-#######################################
+    #######################################
 
     import pdb;pdb.set_trace()
 
     (ParVar.NCol, ParVar.NRow) = image.GetAxis(ParVar.Img)
     (ParVar.ExpTime)           = image.GetExpTime(ParVar.Img)
     (ParVar.Gain)              = image.GetGain(ParVar.Img)
-#    (ParVar.Rdnoise)           = image.GetRdnoise(ParVar.Img)
+    #(ParVar.Rdnoise)           = image.GetRdnoise(ParVar.Img) #remove
 
 
     ParVar.Total = catfil.CatArSort(ParVar)
@@ -235,32 +237,32 @@ def mainDGCG():
     ParVar.Total = catfil.CatSort(ParVar)
 
 
-##### segmentation mask
+    ##### segmentation mask is the mask image
 
     if ((not(os.path.isfile(ParVar.SegFile))) or (ParVar.Overwrite == 1)):
 
         image.MakeImage(ParVar.SegFile, ParVar.NCol, ParVar.NRow)
 
-#        if (ParVar.AutoSatRegion == 1):
-#            catfil.MakeSatDs9(ParVar)
+    #   if (ParVar.AutoSatRegion == 1):
+    #       catfil.MakeSatDs9(ParVar) #check function
 
-#       OldMakeMask(SegFile, SexArSort, KronScale,Ds9SatReg)
+    #   OldMakeMask(SegFile, SexArSort, KronScale,Ds9SatReg) #remove
         image.MakeMask(ParVar.SegFile, ParVar.SexArSort, ParVar.KronScale,0,ParVar.Ds9SatReg)  # offset set to 0
         image.MakeSatBox(ParVar.SegFile, ParVar.Ds9SatReg, ParVar.Total + 1, ParVar.NCol, ParVar.NRow)
     else:
         print("Using old mask image {} \n".format(ParVar.SegFile))
 
 
-########### Sky segmentation annuli Mask  ##########
+    ########### Sky segmentation annuli Mask  ##########
 
     if ((not(os.path.isfile(ParVar.SkyFile))) or (ParVar.Overwrite == 1)):
 
         image.MakeImage(ParVar.SkyFile, ParVar.NCol, ParVar.NRow)
 
-#        if (ParVar.AutoSatRegion == 1):
-#            catfil.MakeSatDs9(ParVar)
+    #   if (ParVar.AutoSatRegion == 1):
+    #     catfil.MakeSatDs9(ParVar)
 
-#        MakeSkyMask(SkyFile, SexArSort, SkyScale, Offset, Ds9SatReg) # Old
+    #   MakeSkyMask(SkyFile, SexArSort, SkyScale, Offset, Ds9SatReg) # Old remove
 
         image.MakeMask(ParVar.SkyFile, ParVar.SexArSort, ParVar.SkyScale, ParVar.Offset, ParVar.Ds9SatReg)
         image.MakeSatBox(ParVar.SkyFile, ParVar.Ds9SatReg, ParVar.Total + 1, ParVar.NCol, ParVar.NRow)
@@ -270,32 +272,33 @@ def mainDGCG():
         print("Using old mask image {} \n".format(ParVar.SkyFile))
 
 
-    catfil.UpdateSatFlags(ParVar)
+    catfil.UpdateSatFlags(ParVar) #check function
 
-################ THIS SECTION WAS REMOVED BECAUSE PixFile IS NOT NEEDED ANYMORE ##################
-# This section is needed to compute final parameters
-# check how this will be affected at the end
+    ################ THIS SECTION WAS REMOVED BECAUSE PixFile IS NOT NEEDED ANYMORE ###
+    # This section is needed to compute final parameters
+    # check how this will be affected at the end
 
-#    if ((not(os.path.isfile(PixFile))) or (Overwrite == 1)):
+    #    if ((not(os.path.isfile(PixFile))) or (Overwrite == 1)):
 
-#        MakeImage(PixFile, NCol, NRow)
+    #        MakeImage(PixFile, NCol, NRow)
 
-#        if (AutoSatRegion == 1):
-#            MakeSatDs9(SexCat, SatRegionScale, NCol, NRow, Ds9SatReg)
+    #        if (AutoSatRegion == 1):
+    #            MakeSatDs9(SexCat, SatRegionScale, NCol, NRow, Ds9SatReg)
 
-#       OldMakeMask(PixFile, SexArSort, 1,Ds9SatReg)  # 1 Kron radius
-#        MakeMask(PixFile, SexArSort, 1,0,Ds9SatReg)  # 1 Kron radius
-#        MakeSatBox(PixFile, Ds9SatReg, Total + 1, NCol, NRow)
-#    else:
-#        print("Using old mask image {} \n".format(PixFile))
+    #       OldMakeMask(PixFile, SexArSort, 1,Ds9SatReg)  # 1 Kron radius
+    #        MakeMask(PixFile, SexArSort, 1,0,Ds9SatReg)  # 1 Kron radius
+    #        MakeSatBox(PixFile, Ds9SatReg, Total + 1, NCol, NRow)
+    #    else:
+    #        print("Using old mask image {} \n".format(PixFile))
 
-###################
+    ###################
 
+    #lastmod
 
-### creating directories...
+    ### creating directories...
 
-#    if not os.path.exists(ParVar.InputDir):
-#        os.makedirs(ParVar.InputDir)
+    #    if not os.path.exists(ParVar.InputDir):
+    #        os.makedirs(ParVar.InputDir)
 
     if not os.path.exists(ParVar.MaskDir):
         os.makedirs(ParVar.MaskDir)
