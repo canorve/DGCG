@@ -725,12 +725,11 @@ def mainDGCG():
         print("Done sky fitting \n")
 
 
-        #lastmod
         if (ParVar.Execute != 2):
 
         #########################################################
             # here comes the serious stuff:
-            core.DGCG(ParVar,Obj,flog,fobjs,fout2,fout3,fout4)
+            core.DGCG(ParVar,Obj,flog,fobjs,fout2,fout3,fout4)  #check insert flags in a data clas
         ##########################################################
 
 
@@ -738,9 +737,11 @@ def mainDGCG():
 
 
 
-#################################################################
+        #############################################################
 
-# Closing files :
+
+
+    # Closing files :
 
     flog.close()
     fout2.close()
@@ -753,7 +754,7 @@ def mainDGCG():
 
     outflag=False
     finalflag=False
-    posflag=False  #change to True
+    posflag=False  #change to True #check why?
     joinflag=False
 
     if (ParVar.Execute != 3 and ParVar.Execute != 2 and ParVar.Execute != 0):
@@ -761,7 +762,7 @@ def mainDGCG():
         print("Creating outputs files \n")
 
 
-        outflag = output.ReadFitlog2("fitlog.dgcg")
+        outflag = output.ReadFitlog2("fitlog.dgcg") #check this function
 
         if (outflag == True):
 
@@ -771,28 +772,27 @@ def mainDGCG():
             else:
                 ParVar.BtFile = ParVar.FileOut + ".ser"
 
-            finalflag = output.MakeOutput("fitlog.dgcg", ParVar, Obj)
+            finalflag = output.MakeOutput("fitlog.dgcg", ParVar, Obj) #check this function
 
             if (finalflag == True):
 
-#                posflag = output.PosCor(OffsetFile, ParVar.BtFile)  # correct positions ## Deprecated
-
+                #check:
+                #posflag = output.PosCor(OffsetFile, ParVar.BtFile) # correct positions Deprecated
                 posflag=True
 
                 if (posflag == True):
 
-#                    ParVar.SexOut = ParVar.FileOut + ".dgcg"
+                    #ParVar.SexOut = ParVar.FileOut + ".dgcg"
                     ParVar.SexOut = ParVar.BtFile + ".dgcg"
 
                     # Join output file with sextractor catalog only for the fitted
                     # objects
 
-
-                    joinflag = output.JoinSexOut(ParVar, Obj)
-
+                    joinflag = output.JoinSexOut(ParVar, Obj) #check function
 
                     FilColOut = ParVar.FileOut + ".dgcg"
 
+                    #check function
                     outcolflag=output.SelectColumns(ParVar.SexOut, ParVar.ColPar, FilColOut, ParVar.HeadFlag)
 
 
@@ -823,15 +823,15 @@ def mainDGCG():
             print("Can't create output files \n")
 
 
-# erasing files
+    # erasing files
 
     if (ParVar.Erase == 1):
 
         print("Erasing unnecesary files \n")
 
-#        runcmd = "rm -r {}".format(ParVar.TempDir)
-#        errm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                      stderr=sp.PIPE, universal_newlines=True)
+        # runcmd = "rm -r {}".format(ParVar.TempDir)
+        # errm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+        # stderr=sp.PIPE, universal_newlines=True)
         # CheckError(errm)
 
         os.remove("psf.temp")
@@ -849,11 +849,10 @@ def mainDGCG():
         os.remove(ParVar.Crashes)
         os.remove(ParVar.Fitted)
 
+        #check if the folders below already exits after refactorization
 
-
-
-#   $errno = system("rm $InputDir/mask-*");
-#   CheckError($errno);
+        #   $errno = system("rm $InputDir/mask-*");
+        #   CheckError($errno);
 
         runcmd = "rm {}/Sky-*".format(ParVar.SkyDir)
         errm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
@@ -871,56 +870,60 @@ def mainDGCG():
                       stderr=sp.PIPE, universal_newlines=True)
 
 
-## removed after the introduction of RunDir
-#            runcmd = "mv obj-* {}/.".format(ParVar.InputDir)
-#            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
-#####################
+        # removed after the introduction of RunDir
+        # runcmd = "mv obj-* {}/.".format(ParVar.InputDir)
+        # errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+        #                           stderr=sp.PIPE, universal_newlines=True)
+        # CheckError(errmv)
+        #####################
 
+        # check those files below if exits after refactorization
 
         runcmd = "mv sigma-* {}/.".format(ParVar.MaskDir)
         errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
                        stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
 
-#            runcmd = "mv out-* {}/.".format(ParVar.OutputDir)
-#            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
+        #        CheckError(errmv)
+
+        #            runcmd = "mv out-* {}/.".format(ParVar.OutputDir)
+        #            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+        #                           stderr=sp.PIPE, universal_newlines=True)
+        #        CheckError(errmv)
 
         runcmd = "mv galfit.* {}/.".format(ParVar.OutputDir)
         errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
                        stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
 
-#            runcmd = "mv mask-* {}/.".format(ParVar.InputDir)
-#            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
+        #        CheckError(errmv)
+
+        #            runcmd = "mv mask-* {}/.".format(ParVar.InputDir)
+        #            errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+        #                           stderr=sp.PIPE, universal_newlines=True)
+        #        CheckError(errmv)
 
         runcmd = "mv *-out.fits {}/.".format(ParVar.OutputDir)
         errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
                        stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errmv)
+
+        # CheckError(errmv)
 
         runcmd = "mv *.png {}/.".format(ParVar.OutputDir)
         errmv = sp.run([runcmd], shell=True, stdout=sp.PIPE,
                        stderr=sp.PIPE, universal_newlines=True)
 
-#            mkdir = "{}/{}".format(ParVar.InputDir, ParVar.PsfDir)
-#            if not os.path.exists(mkdir):
-#                os.makedirs(mkdir)
+        #            mkdir = "{}/{}".format(ParVar.InputDir, ParVar.PsfDir)
+        #            if not os.path.exists(mkdir):
+        #                os.makedirs(mkdir)
 
-#            runcmd = "cp {}/* {}/.".format(ParVar.PsfDir, mkdir)
-#            errcp = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errcp)
+        #            runcmd = "cp {}/* {}/.".format(ParVar.PsfDir, mkdir)
+        #            errcp = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+        #                           stderr=sp.PIPE, universal_newlines=True)
+        #        CheckError(errcp)
 
-#            runcmd = "cp {} {}/.".format(ParVar.ConsFile, ParVar.InputDir)
-#            errcp = sp.run([runcmd], shell=True, stdout=sp.PIPE,
-#                           stderr=sp.PIPE, universal_newlines=True)
-#        CheckError(errcp)
+        #            runcmd = "cp {} {}/.".format(ParVar.ConsFile, ParVar.InputDir)
+        #            errcp = sp.run([runcmd], shell=True, stdout=sp.PIPE,
+        #                           stderr=sp.PIPE, universal_newlines=True)
+        #        CheckError(errcp)
 
 
 
@@ -931,18 +934,19 @@ def mainDGCG():
         print("DGCG had {} success out of a total of {} \n".format(ParVar.Success, GalTot))
 
 
-
+    # check: possible remove below function
     if not os.path.exists(ParVar.ReRunDir):
         os.makedirs(ParVar.ReRunDir)
 
 
-    maskrun= Obj.ReFit == True
+    maskrun= Obj.ReFit == True  #check
 
 
     ind=np.where(maskrun == True)
 
     indx=ind[0]
 
+    #check refactorize this: 
     for idx in enumerate(indx):
 
         objid = Obj.Num[idx[1]]
@@ -962,11 +966,11 @@ def mainDGCG():
     print("copying files to refit done..")
 
 
-################################
-################################
-################################
+    ################################
+    ################################
+    ################################
 
-# computing running time
+    # computing running time
 
     EndRun = timer()
 
@@ -1002,20 +1006,20 @@ def mainDGCG():
 
 
 
-#############################################################################
-#              End of program  ###################################
+    ##############################################################
+    ###########  End of program ##################################
 
 
-#     ______________________________________________________________________
-#    /___/___/___/___/___/___/___/___/___/___/___/___/___/___/___/___/___/_/|
-#   |___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|__/|
-#   |_|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|/|
-#   |___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|__/|
-#   |_|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|/|
-#   |___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|__/|
-#   |_|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|/
+    #     ______________________________________________________________________
+    #    /___/___/___/___/___/___/___/___/___/___/___/___/___/___/___/___/___/_/|
+    #   |___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|__/|
+    #   |_|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|/|
+    #   |___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|__/|
+    #   |_|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|/|
+    #   |___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|__/|
+    #   |_|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|___|/
 
 
-##############################################################################
+    ##############################################################################
 
 
