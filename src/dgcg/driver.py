@@ -110,7 +110,8 @@ def mainDGCG():
     #########################################
     ### deleting any previous files run by DGCG
 
-    #mover a una funcion: cleanfiles
+    # check mover a una funcion: cleanfiles. mover dentro de una nuevo archivo 
+    # check change options of sp.run to os.function check if available 
 
     runcmd = "rm {}".format(ParVar.Crashes)
     errrm = sp.run([runcmd], shell=True, stdout=sp.PIPE,
@@ -222,9 +223,8 @@ def mainDGCG():
 
 
 
-    #######################################
+    ####################################### check mover a una funcion?
 
-    import pdb;pdb.set_trace()
 
     (ParVar.NCol, ParVar.NRow) = image.GetAxis(ParVar.Img)
     (ParVar.ExpTime)           = image.GetExpTime(ParVar.Img)
@@ -297,10 +297,14 @@ def mainDGCG():
     ### creating directories...
     #create directories
 
+    #check move to a functions
 
     # move the instruction below to a function
     #    if not os.path.exists(ParVar.InputDir):
     #        os.makedirs(ParVar.InputDir)
+
+    # check change options of sp.run to os.function
+    # check create individual folders for every object #later not here
 
     if not os.path.exists(ParVar.MaskDir):
         os.makedirs(ParVar.MaskDir)
@@ -347,7 +351,7 @@ def mainDGCG():
 
 
     print("Creating Ds9 Box region of all objects \n")
-    catfil.BoxDs9(ParVar) #check function is this necessary?
+    catfil.BoxDs9(ParVar) #check function is this necessary? yes
 
 
     # splitting image files
@@ -374,6 +378,9 @@ def mainDGCG():
     print(" Created by Christopher Añorve                         	             \n")
     print("===================================================================== \n")
 
+
+    #lastmod
+    #check if the files below are necessary
 
     flog = open(ParVar.LogFile, "w") #check what is going to be printed in logfile
 

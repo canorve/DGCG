@@ -2,6 +2,7 @@
 import configparser
 
 
+#check update variables
 def read_config(confile):
 
 	# Create a ConfigParser object
